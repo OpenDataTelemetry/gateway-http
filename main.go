@@ -1,27 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	app := fiber.New()
-
-	app.Post("/post", func(c *fiber.Ctx) error {
-		payload := struct {
-			Name  string `json:"name"`
-			Email string `json:"email"`
-		}{}
-
-		if err := c.BodyParser(&payload); err != nil {
-			return err
-		}
-
-		fmt.Println(payload)
-		return c.JSON(payload)
+	r := gin.Default()
+	r.POST("/device-gateway-http", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
 	})
-
-	app.Listen(":3000")
+	r.Run()
 }
